@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<title>認字隨機抽題</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; }
+  #character { font-size: 72px; margin-bottom: 20px; }
+  #zhuyin { font-size: 36px; color: #555; margin-top: 10px; }
+  button { padding: 10px 20px; font-size: 16px; }
+</style>
+</head>
+<body>
+
+<h1>認字隨機抽題</h1>
+<div id="character"></div>
+<div id="zhuyin"></div>
+<button id="showAnswerBtn">抽字</button>
+
+<script>
+  const characters = [
+    { char: "光", zhuyin: "ㄍㄨㄤ" },
+    { char: "電", zhuyin: "ㄉㄧㄢˋ" },
+    { char: "雷", zhuyin: "ㄌㄟˊ" },
+    { char: "雲", zhuyin: "ㄩㄣˊ" },
+    { char: "雨", zhuyin: "ㄩˇ" },
+    { char: "林", zhuyin: "ㄌㄧㄣˊ" },
+    { char: "木", zhuyin: "ㄇㄨˋ" },
+    { char: "穴", zhuyin: "ㄒㄩㄝˋ" },
+    { char: "石", zhuyin: "ㄕˊ" },
+    { char: "土", zhuyin: "ㄊㄨˇ" },
+    { char: "山", zhuyin: "ㄕㄢ" },
+    { char: "火", zhuyin: "ㄏㄨㄛˇ" },
+    { char: "水", zhuyin: "ㄕㄨㄟˇ" },
+    { char: "地", zhuyin: "ㄉㄧˋ" },
+    { char: "天", zhuyin: "ㄊㄧㄢ" },
+    { char: "旦", zhuyin: "ㄉㄢˋ" },
+    { char: "早", zhuyin: "ㄗㄠˇ" },
+    { char: "日", zhuyin: "ㄖˋ" }
+  ];
+
+  let usedIndices = new Set();
+  let currentIndex = null;
+  let showAnswer = false;
+
+  const charDiv = document.getElementById("character");
+  const zhuyinDiv = document.getElementById("zhuyin");
+  const btn = document.getElementById("showAnswerBtn");
+
+  function pickRandomIndex() {
+    if (usedIndices.size === characters.length) {
+      alert("字庫已抽完，將重新開始。");
+      usedIndices.clear();
+    }
+
+    let idx;
+    do {
+      idx = Math.floor(Math.random() * characters.length);
+    } while (usedIndices.has(idx));
+    usedIndices.add(idx);
+    return idx;
+  }
+
+  btn.addEventListener("click", () => {
+    if (currentIndex === null || showAnswer) {
+      // 抽新字
+      currentIndex = pickRandomIndex();
+      charDiv.textContent = characters[currentIndex].char;
+      zhuyinDiv.textContent = "";
+      btn.textContent = "看注音";
+      showAnswer = false;
+    } else {
+      // 顯示注音
+      zhuyinDiv.textContent = characters[currentIndex].zhuyin;
+      btn.textContent = "抽下一字";
+      showAnswer = true;
+    }
+  });
+</script>
+
+</body>
+</html>
